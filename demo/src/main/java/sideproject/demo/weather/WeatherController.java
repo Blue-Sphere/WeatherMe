@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,11 @@ public class WeatherController {
     public WeatherController(WeatherService weatherService, WeatherSecurity weatherSecurity){
         this.weatherSecurity = weatherSecurity;
         this.weatherService = weatherService;
+    }
+
+    @GetMapping(path = "/")
+    public RedirectView redirectLoginPage(){
+        return new RedirectView("/login");
     }
 
     @GetMapping(path = "/sign-up")
@@ -153,11 +159,6 @@ public class WeatherController {
                 return "error";
             }
         }
-
-//        @GetMapping(path = "/user")
-//        public User getUser(){
-//            return weatherService.getUser("name");
-//        }
 
     }
 }
