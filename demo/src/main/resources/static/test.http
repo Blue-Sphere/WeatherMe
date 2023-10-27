@@ -1,0 +1,13 @@
+# POST https://api.line.me/oauth2/v2.1/token
+# Content-Type: application/x-www-form-urlencoded
+
+# grant_type=authorization_code
+# &code=ZKy8oYzeKgd9xlq5JMR0
+# &redirect_uri=https://fbb2-180-176-67-45.ngrok-free.app/line/connect
+# &client_id=2000634910
+# &client_secret=74db32fa5721796f13c8c082c96895f3
+
+GET https://api.line.me/oauth2/v2.1/userinfo
+Content-Type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiJ9.qPRs2gLf9-EelxjgOSi4rEIVwBuNFOAzUyd5kW1ml9xKX6yPafIydwNGV0y835zvFM_qHHOci5Tu37bQfgDySx73XDBkKT-BFIfuRjKAFzIooZzyF5odXvpaTzga7RgFS8tXErz6OzTDDcmqRWQrvrwyBXbMVrtSUy4cQC3vdIc.k4lffWeNcB3udd_bGFcvT8JzHVQSZDIIHOiXYXHm6XE
+

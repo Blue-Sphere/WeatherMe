@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return null;
+        }
+    </script>
+</head>
+<body>
+    <p>正在連結中 請稍後...</p>
+    <script>
+        let url = new URL(location.href);
+        let code = url.searchParams.get('code');
+        let data = {
+            code: code
+        }
+        fetch("/line/connect", {method: "POST",
+                                headers: {"Content-Type": "application/json","Authorization": `Bearer ${getCookie("token")}`},
+                                body: JSON.stringify(data)})
+        .then(response => response.text())
+        .then(data => {
+            alert(data);
+            window.location = "https://weatherMe.onrender.com/login";
+        })
+        .catch(error => alert(error));
+    </script>
+</body>
+</html>

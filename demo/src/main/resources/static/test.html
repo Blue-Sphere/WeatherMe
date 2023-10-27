@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function createCookie(){
+            document.cookie = "測試=10";
+        }
+        function displayCookie(){
+            alert(document.cookie);
+
+        }
+    </script>
+</head>
+<body>
+    <button onclick="createCookie()">create cookie</button>
+    <button onclick="displayCookie()">display cookie</button>
+</body>
+</html>

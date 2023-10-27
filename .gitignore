@@ -1,0 +1,12 @@
+.idea
+
+.vscode
+
+docker
+
+demo/src/main/resources/secrets/*.*
+
+demo/src/main/resources/application.properties
+
+# google authorization token
+tokens
