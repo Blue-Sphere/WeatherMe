@@ -33,15 +33,15 @@ public class WeatherService {
     private final WeatherRepository weatherRepository;
     private final JsonFile jsonFile;
     private final Secret secret;
-    private final GMailer gmailer;
+    private final Mailer mailer;
     private final String cwbToken;
 
     @Autowired
-    public WeatherService(WeatherRepository weatherRepository, JsonFile jsonFile, Secret secret, GMailer gmailer, String cwbToken) {
+    public WeatherService(WeatherRepository weatherRepository, JsonFile jsonFile, Secret secret, Mailer gmailer, String cwbToken) {
         this.weatherRepository = weatherRepository;
         this.jsonFile = jsonFile;
         this.secret = secret;
-        this.gmailer = gmailer;
+        this.mailer = gmailer;
         this.cwbToken = secret.getAuthorizationCode();
     }
 
@@ -73,13 +73,9 @@ public class WeatherService {
                 || weatherRepository.findByName(name).isPresent()) {
             throw new IllegalStateException("the email or username is already exist");
         } else {
-            try {
-                gmailer.sendMail(email, "weather.me 註冊驗證碼", name + " 您好,您的驗證碼是:" + verificationCode);
-                redisTemplate.opsForValue().set(email, verificationCode);
-                return "OK";
-            } catch (MessagingException e) {
-                throw new IllegalStateException("郵件發送失敗" + e.getMessage());
-            }
+            mailer.sendEmail(email, "weather.me 註冊驗證碼", name + " 您好,您的驗證碼是:" + verificationCode);
+            redisTemplate.opsForValue().set(email, verificationCode);
+            return "OK";
         }
 
     }
@@ -398,7 +394,7 @@ public class WeatherService {
         con.setDoOutput(true);
 
         String parameters = "grant_type=authorization_code&code=" + code
-                + "&redirect_uri=https://weatherMe.onrender.com/line/connect&client_id=2000634910&client_secret=74db32fa5721796f13c8c082c96895f3";
+                + "&redirect_uri=https://weatherme-3vsl.onrender.com/line/connect&client_id=2000634910&client_secret=74db32fa5721796f13c8c082c96895f3";
         logger.info(parameters);
         byte[] postData = parameters.getBytes(StandardCharsets.UTF_8);
 
