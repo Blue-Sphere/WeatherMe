@@ -1,29 +1,20 @@
 package sideproject.demo.weather;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.JsonPath;
+import org.mindrot.jbcrypt.BCrypt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Service;
+
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
-
-import javax.mail.*;
-
-import com.jayway.jsonpath.Configuration;
-import com.jayway.jsonpath.JsonPath;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Service;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.mindrot.jbcrypt.BCrypt;
+import java.util.*;
 
 @Service
 public class WeatherService {
@@ -131,13 +122,26 @@ public class WeatherService {
             User user = optionalUser.get();
             String obsId = user.getObsId();
 
-            String url = "https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0001-001?Authorization=" + cwbToken +  "&stationId="
+            String url = "https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0001-001?Authorization=" + cwbToken + "&stationId="
                     + obsId + "&elementName=TEMP,WDSD,H_24R,Weather&parameterName=CITY,TOWN";
+
+            /*HttpClient 用法 速度較慢所以先不採用*/
+//            HttpRequest request = HttpRequest.newBuilder()
+//                    .uri(new URI(url))
+//                    .GET()
+//                    .build();
+//
+//            HttpResponse<String> response = HttpClient.newBuilder()
+//                    .build()
+//                    .send(request, HttpResponse.BodyHandlers.ofString());
+
+            /*HttpUrlConnection 用法*/
             URL obj = new URL(url);
+
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
+//
             con.setRequestMethod("GET");
-
+//
             Scanner scanner = new Scanner(con.getInputStream(), "UTF-8");
 
             while (scanner.hasNextLine()) {
@@ -157,14 +161,14 @@ public class WeatherService {
                 String weather = JsonPath.read(document,
                         "$['records']['location'][0]['weatherElement'][3]['elementValue']");
                 String location = JsonPath.read(document,
-                        "$['records']['location'][0]['parameter'][0]['parameterValue']")
+                                "$['records']['location'][0]['parameter'][0]['parameterValue']")
                         .toString()
                         + JsonPath.read(document,
                                 "$['records']['location'][0]['parameter'][1]['parameterValue']")
-                                .toString();
+                        .toString();
                 // System.out.printf("%s %s %s %s %s ", time, temp, wdsd, h_24r, weather);
 
-                String[] weatherList = { time, temp, wdsd, h_24r, weather, location };
+                String[] weatherList = {time, temp, wdsd, h_24r, weather, location};
 
                 for (int x = 0; x < weatherList.length; x++) {
                     if (weatherList[x].equals("-99") || weatherList[x].equals("")) {
@@ -184,7 +188,7 @@ public class WeatherService {
                 return timlyWeather;
             }
         }
-        throw new IllegalStateException("error data");
+        throw new IllegalStateException("error token");
     }
 
     public ArrayList<TwoDaysWeather> getTwoDaysWeather(String name) throws Exception {
@@ -394,7 +398,7 @@ public class WeatherService {
         con.setDoOutput(true);
 
         String parameters = "grant_type=authorization_code&code=" + code
-                + "&redirect_uri=https://weatherme-3vsl.onrender.com/line/connect&client_id=2000634910&client_secret=74db32fa5721796f13c8c082c96895f3";
+                + "&redirect_uri=https://weatherme-wb9e1nl5.b4a.run/line/connect&client_id=2000634910&client_secret=74db32fa5721796f13c8c082c96895f3";
         logger.info(parameters);
         byte[] postData = parameters.getBytes(StandardCharsets.UTF_8);
 

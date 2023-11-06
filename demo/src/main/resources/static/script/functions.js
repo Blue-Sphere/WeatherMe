@@ -30,7 +30,7 @@ function lineLogin(){
   let url = "https://access.line.me/oauth2/v2.1/authorize?";
   let response_type = "response_type=code";
   let client_id = "client_id=2000634910";
-  let redirect_uri = "redirect_uri=https://weatherme-3vsl.onrender.com/line/connect";
+  let redirect_uri = "redirect_uri=https://weatherme-wb9e1nl5.b4a.run/line/connect";
   let state = "state=login";
   let scope = "scope=openid";
   let loginUrl = url + response_type + "&" + client_id + "&" + redirect_uri + "&" + state + "&" + scope;

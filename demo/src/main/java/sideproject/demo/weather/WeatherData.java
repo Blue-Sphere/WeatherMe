@@ -1,9 +1,5 @@
 package sideproject.demo.weather;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 // public class WeatherData {
 
 //     private String title;
@@ -85,7 +81,7 @@ public class WeatherData{
 }
 
 class TimlyWeather extends WeatherData{
-    
+
     private String accumulatedRainfall;
     private String temp;
     private String location;

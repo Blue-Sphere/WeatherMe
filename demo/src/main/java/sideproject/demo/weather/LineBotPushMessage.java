@@ -1,7 +1,5 @@
 package sideproject.demo.weather;
 
-import java.util.*;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.jayway.jsonpath.DocumentContext;
@@ -10,16 +8,16 @@ import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.client.LineMessagingClientBuilder;
 import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.message.FlexMessage;
-import com.linecorp.bot.model.message.TextMessage;
-import com.linecorp.bot.model.message.flex.container.Bubble;
 import com.linecorp.bot.model.message.flex.container.FlexContainer;
-import com.linecorp.bot.spring.boot.annotation.LineBotMessages;
-import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @SpringBootApplication
 @EnableScheduling
