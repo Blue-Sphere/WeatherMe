@@ -375,9 +375,8 @@ public class WeatherService {
     public void updateLineId(User userWithLindId) {
         Optional<User> optionalUser = weatherRepository.findByName(userWithLindId.getName());
         if (optionalUser.isPresent()) {
-            logger.info("user存在");
             User user = optionalUser.get();
-            if (!user.getLineId().equals(userWithLindId.getLineId())){
+            if (user.getLineId() == null || !user.getLineId().equals(userWithLindId.getLineId())){
                 user.setLineId(userWithLindId.getLineId());
                 weatherRepository.save(user);
             }
@@ -385,7 +384,6 @@ public class WeatherService {
     }
 
     public String getUsersLindId(String code) throws Exception {
-        logger.info("code: " + code);
         // Connect to the API, and get the authorization token
         URL obj = new URL("https://api.line.me/oauth2/v2.1/token");
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -398,8 +396,8 @@ public class WeatherService {
         con.setDoOutput(true);
 
         String parameters = "grant_type=authorization_code&code=" + code
-                + "&redirect_uri=https://weatherme-wb9e1nl5.b4a.run/line/connect&client_id=2000634910&client_secret=74db32fa5721796f13c8c082c96895f3";
-        logger.info(parameters);
+                + "&redirect_uri=https://weatherme-3vsl.onrender.com/line/connect&client_id=2000634910&client_secret=74db32fa5721796f13c8c082c96895f3";
+
         byte[] postData = parameters.getBytes(StandardCharsets.UTF_8);
 
         OutputStream outputStream = con.getOutputStream();
@@ -410,7 +408,6 @@ public class WeatherService {
 
         int responseCode = con.getResponseCode();
         try{
-                logger.info(String.valueOf(responseCode));
                 Scanner scanner = new Scanner(con.getInputStream(), "UTF-8");
                 String accessToken="";
                 while(scanner.hasNextLine()){
@@ -420,7 +417,6 @@ public class WeatherService {
                 }
                 scanner.close();
                 con.disconnect();
-                logger.info(accessToken);
     
                 // Connect to the API, and get the userId
                 URL obj2 = new URL("https://api.line.me/oauth2/v2.1/userinfo");
