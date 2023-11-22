@@ -141,21 +141,21 @@
             }
         }
 
-        function readyToChange() {
+        /* function readyToChange() {
             $(".dropdown-menu a").click(function (e) {
                 e.preventDefault();
                 $(this).parents(".dropdown").find('.btn').html('<span id=' + $(this).parents(".dropdown").find('.btn').find("span").attr('id') + '>' + $(this).text() + '</span>');
                 $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
             });
-        }
+        } */
     </script>
 
 </head>
 
 <body>
-    <div class="container" id="loginForm">
+    <div class="container-fluid" id="loginForm">
         <div class="row justify-content-center mt-5">
-            <div class="col-md-5">
+            <div class="col-md-6 col-lg-5">
                 <div class="card">
                     <div class="card-header">
                         <h4 class="text-center">Login</h4>

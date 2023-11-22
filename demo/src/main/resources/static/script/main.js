@@ -9,16 +9,6 @@ $(document).ready(function () {
   });
 });
 
-// 時間選擇器
-$(document).ready(function () {
-  $('timepicker').timepicker({
-    timeFormat: 'HH:mm',
-    interval: 15,
-    minTime: '00:00',
-    maxTime: '23:45',
-  });
-});
-
 // function readyToChange() {
 //   $(".dropdown-menu a").click(function (e) {
 //     e.preventDefault();

@@ -32,6 +32,8 @@ public interface WeatherRepository extends MongoRepository<User, String> {
 
     Optional<User> findByEmail(String email);
 
+    Optional<User> findByLineId(String lineId);
+
     @Query("{ 'lineId' : { $ne : null }, 'notificationTime' : ?0 }")
     List<User> getUsersWhoNeedToBeNotified (String timeNow);
 
@@ -85,6 +87,20 @@ class JsonFile {
     public Object getLineBotPushMessageTemplate() {
         try {
             InputStream jsonFile = new ClassPathResource("json/LineBotPushMessageTemplate.json").getInputStream();
+            String jsonString = IOUtils.toString(jsonFile, StandardCharsets.UTF_8);
+
+            Object document = Configuration.defaultConfiguration().jsonProvider().parse(jsonString);
+            return document;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Bean(name = "getLineBotWeeklyMessageTemplate")
+    public Object getLineBotWeeklyMessageTemplate() {
+        try {
+            InputStream jsonFile = new ClassPathResource("json/LineBotWeeklyMessageTemplate.json").getInputStream();
             String jsonString = IOUtils.toString(jsonFile, StandardCharsets.UTF_8);
 
             Object document = Configuration.defaultConfiguration().jsonProvider().parse(jsonString);

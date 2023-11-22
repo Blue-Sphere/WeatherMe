@@ -52,18 +52,20 @@ public class LineBotPushMessage {
 
         logger.info("執行Scheduled - PushMessage偵測並推送 - 每30分鐘運行一次");
 
-        LineMessagingClientBuilder lineMessagingClientBuilder = LineMessagingClient.builder(messageBotToken);
-        lineMessagingClientBuilder.build();
-
-        Object pushMessageTemplate = jsonFile.getLineBotPushMessageTemplate();
-
         Date currentDate = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
 
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
-        String notificationTime = hour + ":" + minute;
+        String notificationTime = String.format("%02d", hour) + ":" + String.format("%02d", minute);
+
+        logger.info("目前時間為："+notificationTime);
+
+        LineMessagingClientBuilder lineMessagingClientBuilder = LineMessagingClient.builder(messageBotToken);
+        lineMessagingClientBuilder.build();
+
+        Object pushMessageTemplate = jsonFile.getLineBotPushMessageTemplate();
 
         List<User> theUsersWhoNeedToBeNotified = weatherRepository.getUsersWhoNeedToBeNotified(notificationTime);
 
@@ -76,12 +78,29 @@ public class LineBotPushMessage {
 
             User target = theUsersWhoNeedToBeNotified.get(i);
 
-            ArrayList<TwoDaysWeather> twoDaysWeather = weatherService.getTwoDaysWeather(target.getName());
+            ArrayList<TwoDaysWeather> twoDaysWeathers = weatherService.getTwoDaysWeather(target.getName());
 
             DocumentContext context = JsonPath.parse(pushMessageTemplate);
 
-            for(int count=0; count<10;count++){
-                TwoDaysWeather predictWeather = twoDaysWeather.get(count);
+            /*確認推送訊息不會是過去資料*/
+            int pushcount = 10;
+            int count = 0;
+            for(;count<pushcount;count++){
+                int templateYear = Integer.parseInt(twoDaysWeathers.get(count).getStartTime().substring(0,4));
+                int templateMonth = Integer.parseInt(twoDaysWeathers.get(count).getStartTime().substring(5,7));
+                int templateDay = Integer.parseInt(twoDaysWeathers.get(count).getStartTime().substring(8,10));
+                int templateHour = Integer.parseInt(twoDaysWeathers.get(count).getStartTime().substring(11,13));
+
+                if (currentDate.after(new Date(templateYear, templateMonth, templateDay, templateHour, 0))){
+                    pushcount +=1;
+                    continue;
+                }
+                break;
+            }
+
+            /*寫入推送訊息*/
+            for(;count<pushcount;count++){
+                TwoDaysWeather predictWeather = twoDaysWeathers.get(count);
 
                 // 修改標題、時間
                 context.set("$['contents'][" + count + "]['body']['contents'][0]['text']", "氣象預報：" + predictWeather.getStartTime());// 修改城市、鄉鎮

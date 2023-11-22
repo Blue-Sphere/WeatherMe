@@ -122,8 +122,10 @@ public class WeatherService {
             User user = optionalUser.get();
             String obsId = user.getObsId();
 
-            String url = "https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0001-001?Authorization=" + cwbToken + "&stationId="
-                    + obsId + "&elementName=TEMP,WDSD,H_24R,Weather&parameterName=CITY,TOWN";
+//            String url = "https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0001-001?Authorization=" + cwbToken + "&stationId="
+//                    + obsId + "&elementName=TEMP,WDSD,H_24R,Weather&parameterName=CITY,TOWN";
+            String url = "https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0001-001?Authorization="+cwbToken+  "&StationId="
+                    +obsId+"&WeatherElement=Weather,Now,WindDirection,WindSpeed,AirTemperature,RelativeHumidity&GeoInfo=CountyName,TownName";
 
             /*HttpClient 用法 速度較慢所以先不採用*/
 //            HttpRequest request = HttpRequest.newBuilder()
@@ -149,22 +151,21 @@ public class WeatherService {
                 TimlyWeather timlyWeather = new TimlyWeather();
                 String line = scanner.nextLine();
                 Object document = Configuration.defaultConfiguration().jsonProvider().parse(line);
-                // Object result = JsonPath.read(document,
-                // "$['records']['locations'][0]['location'][0]['locationName']");
-                String time = JsonPath.read(document, "$['records']['location'][0]['time']['obsTime']");
+
+                String time = JsonPath.read(document, "$['records']['Station'][0]['ObsTime']['DateTime']");
                 String temp = JsonPath.read(document,
-                        "$['records']['location'][0]['weatherElement'][1]['elementValue']");
+                        "$['records']['Station'][0]['WeatherElement']['AirTemperature']").toString();
                 String wdsd = JsonPath.read(document,
-                        "$['records']['location'][0]['weatherElement'][0]['elementValue']");
+                        "$['records']['Station'][0]['WeatherElement']['WindSpeed']").toString();
                 String h_24r = JsonPath.read(document,
-                        "$['records']['location'][0]['weatherElement'][2]['elementValue']");
+                        "$['records']['Station'][0]['WeatherElement']['Now']['Precipitation']").toString();
                 String weather = JsonPath.read(document,
-                        "$['records']['location'][0]['weatherElement'][3]['elementValue']");
+                        "$['records']['Station'][0]['WeatherElement']['Weather']");
                 String location = JsonPath.read(document,
-                                "$['records']['location'][0]['parameter'][0]['parameterValue']")
+                                "$['records']['Station'][0]['GeoInfo']['CountyName']")
                         .toString()
                         + JsonPath.read(document,
-                                "$['records']['location'][0]['parameter'][1]['parameterValue']")
+                                "$['records']['Station'][0]['GeoInfo']['TownName']")
                         .toString();
                 // System.out.printf("%s %s %s %s %s ", time, temp, wdsd, h_24r, weather);
 

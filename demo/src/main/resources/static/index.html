@@ -20,6 +20,16 @@
   <!-- 本地Js -->
   <script type="module" src="/script/main.js"></script>
 
+  <script>
+    function readyToChange() {
+            $(".dropdown-menu a").click(function (e) {
+                e.preventDefault();
+                $(this).parents(".dropdown").find('.btn').html('<span id=' + $(this).parents(".dropdown").find('.btn').find("span").attr('id') + '>' + $(this).text() + '</span>');
+                $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+            });
+        }
+  </script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
 
@@ -212,7 +222,7 @@
             </div>
           </div>
         </div>
-        <p class="text-light my-1">- LineBot 設定</p>
+        <p class="text-light my-1">- LineBot 帳戶連結與通知時間</p>
         <div>
           <button id="btn-primary" th:class="${lineConnectionSuccess} ? 'btn btn-success my-1' : 'btn btn-light my-1'"
             onclick="lineLogin()">
@@ -220,59 +230,59 @@
           </button>
         </div>
         <div class="dropdown mr-2 my-2">
-          <button class="btn dropdown-toggle btn-primary" type="button" id="dropdownMenuButton-2" data-toggle="dropdown"
+          <button class="btn dropdown-toggle btn-primary" type="button" id="dropdownMenuButton-3" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             <span id="notificationTime" th:text="${notificationTime}"></span>
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdown-menu-3">
-            <a class="dropdown-item" href="#" data-value="00:00">00:00</a>
-            <a class="dropdown-item" href="#" data-value="00:30">00:30</a>
-            <a class="dropdown-item" href="#" data-value="01:00">01:00</a>
-            <a class="dropdown-item" href="#" data-value="01:30">01:30</a>
-            <a class="dropdown-item" href="#" data-value="02:00">02:00</a>
-            <a class="dropdown-item" href="#" data-value="02:30">02:30</a>
-            <a class="dropdown-item" href="#" data-value="03:00">03:00</a>
-            <a class="dropdown-item" href="#" data-value="03:30">03:30</a>
-            <a class="dropdown-item" href="#" data-value="04:00">04:00</a>
-            <a class="dropdown-item" href="#" data-value="04:30">04:30</a>
-            <a class="dropdown-item" href="#" data-value="05:00">05:00</a>
-            <a class="dropdown-item" href="#" data-value="05:30">05:30</a>
-            <a class="dropdown-item" href="#" data-value="06:00">06:00</a>
-            <a class="dropdown-item" href="#" data-value="06:30">06:30</a>
-            <a class="dropdown-item" href="#" data-value="07:00">07:00</a>
-            <a class="dropdown-item" href="#" data-value="07:30">07:30</a>
-            <a class="dropdown-item" href="#" data-value="08:00">08:00</a>
-            <a class="dropdown-item" href="#" data-value="08:30">08:30</a>
-            <a class="dropdown-item" href="#" data-value="09:00">09:00</a>
-            <a class="dropdown-item" href="#" data-value="09:30">09:30</a>
-            <a class="dropdown-item" href="#" data-value="10:00">10:00</a>
-            <a class="dropdown-item" href="#" data-value="10:30">10:30</a>
-            <a class="dropdown-item" href="#" data-value="11:00">11:00</a>
-            <a class="dropdown-item" href="#" data-value="11:30">11:30</a>
-            <a class="dropdown-item" href="#" data-value="12:00">12:00</a>
-            <a class="dropdown-item" href="#" data-value="12:30">12:30</a>
-            <a class="dropdown-item" href="#" data-value="13:00">13:00</a>
-            <a class="dropdown-item" href="#" data-value="13:30">13:30</a>
-            <a class="dropdown-item" href="#" data-value="14:00">14:00</a>
-            <a class="dropdown-item" href="#" data-value="14:30">14:30</a>
-            <a class="dropdown-item" href="#" data-value="15:00">15:00</a>
-            <a class="dropdown-item" href="#" data-value="15:30">15:30</a>
-            <a class="dropdown-item" href="#" data-value="16:00">16:00</a>
-            <a class="dropdown-item" href="#" data-value="16:30">16:30</a>
-            <a class="dropdown-item" href="#" data-value="17:00">17:00</a>
-            <a class="dropdown-item" href="#" data-value="17:30">17:30</a>
-            <a class="dropdown-item" href="#" data-value="18:00">18:00</a>
-            <a class="dropdown-item" href="#" data-value="18:30">18:30</a>
-            <a class="dropdown-item" href="#" data-value="19:00">19:00</a>
-            <a class="dropdown-item" href="#" data-value="19:30">19:30</a>
-            <a class="dropdown-item" href="#" data-value="20:00">20:00</a>
-            <a class="dropdown-item" href="#" data-value="20:30">20:30</a>
-            <a class="dropdown-item" href="#" data-value="21:00">21:00</a>
-            <a class="dropdown-item" href="#" data-value="21:30">21:30</a>
-            <a class="dropdown-item" href="#" data-value="22:00">22:00</a>
-            <a class="dropdown-item" href="#" data-value="22:30">22:30</a>
-            <a class="dropdown-item" href="#" data-value="23:00">23:00</a>
-            <a class="dropdown-item" href="#" data-value="23:30">23:30</a>
+            <a class="dropdown-item" data-value="00:00">00:00</a>
+            <a class="dropdown-item" data-value="00:30">00:30</a>
+            <a class="dropdown-item" data-value="01:00">01:00</a>
+            <a class="dropdown-item" data-value="01:30">01:30</a>
+            <a class="dropdown-item" data-value="02:00">02:00</a>
+            <a class="dropdown-item" data-value="02:30">02:30</a>
+            <a class="dropdown-item" data-value="03:00">03:00</a>
+            <a class="dropdown-item" data-value="03:30">03:30</a>
+            <a class="dropdown-item" data-value="04:00">04:00</a>
+            <a class="dropdown-item" data-value="04:30">04:30</a>
+            <a class="dropdown-item" data-value="05:00">05:00</a>
+            <a class="dropdown-item" data-value="05:30">05:30</a>
+            <a class="dropdown-item" data-value="06:00">06:00</a>
+            <a class="dropdown-item" data-value="06:30">06:30</a>
+            <a class="dropdown-item" data-value="07:00">07:00</a>
+            <a class="dropdown-item" data-value="07:30">07:30</a>
+            <a class="dropdown-item" data-value="08:00">08:00</a>
+            <a class="dropdown-item" data-value="08:30">08:30</a>
+            <a class="dropdown-item" data-value="09:00">09:00</a>
+            <a class="dropdown-item" data-value="09:30">09:30</a>
+            <a class="dropdown-item" data-value="10:00">10:00</a>
+            <a class="dropdown-item" data-value="10:30">10:30</a>
+            <a class="dropdown-item" data-value="11:00">11:00</a>
+            <a class="dropdown-item" data-value="11:30">11:30</a>
+            <a class="dropdown-item" data-value="12:00">12:00</a>
+            <a class="dropdown-item" data-value="12:30">12:30</a>
+            <a class="dropdown-item" data-value="13:00">13:00</a>
+            <a class="dropdown-item" data-value="13:30">13:30</a>
+            <a class="dropdown-item" data-value="14:00">14:00</a>
+            <a class="dropdown-item" data-value="14:30">14:30</a>
+            <a class="dropdown-item" data-value="15:00">15:00</a>
+            <a class="dropdown-item" data-value="15:30">15:30</a>
+            <a class="dropdown-item" data-value="16:00">16:00</a>
+            <a class="dropdown-item" data-value="16:30">16:30</a>
+            <a class="dropdown-item" data-value="17:00">17:00</a>
+            <a class="dropdown-item" data-value="17:30">17:30</a>
+            <a class="dropdown-item" data-value="18:00">18:00</a>
+            <a class="dropdown-item" data-value="18:30">18:30</a>
+            <a class="dropdown-item" data-value="19:00">19:00</a>
+            <a class="dropdown-item" data-value="19:30">19:30</a>
+            <a class="dropdown-item" data-value="20:00">20:00</a>
+            <a class="dropdown-item" data-value="20:30">20:30</a>
+            <a class="dropdown-item" data-value="21:00">21:00</a>
+            <a class="dropdown-item" data-value="21:30">21:30</a>
+            <a class="dropdown-item" data-value="22:00">22:00</a>
+            <a class="dropdown-item" data-value="22:30">22:30</a>
+            <a class="dropdown-item" data-value="23:00">23:00</a>
+            <a class="dropdown-item" data-value="23:30">23:30</a>
           </div>
         </div>
         <!-- <input type="text" class="timepicker my-n5"> -->
